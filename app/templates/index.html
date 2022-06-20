@@ -1,18 +1,23 @@
-<form action="/", method="post" class="form">
-    <p><label>Округ:</label>
-        <select name="okrug">
-            {% for okrug in okrugs %}
-                <option value="{{ okrug }}">{{ okrug }}</option>
-            {% endfor %}
-        </select>
-    <p><label>Метро:</label>
-        <select name="metro">
-            {% for metro in metros %}
-                <option value="{{ metro }}">{{ metro }}</option>
-            {% endfor %}
-        </select>
-    <p><label>Время в пути до метро(пешком):</label><input type="number" name="route_minutes" value="" required/>
-    <p><label>Общая площадь:</label><input type="number" name="total_area" value="" required/>
-    <p><label>Кол-во комнат:</label><input type="number" name="rooms" value="" required/>
-    <p><input type="submit" value="Get predict!"/>
-</form>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main_page.css') }}">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<div class="main">
+        <form action="/", method="post" class="form">
+            <p><label class="okrug_label">Округ:</label>
+                <select class="okrug_selector" name="okrug">
+                    {% for okrug in okrugs %}
+                        <option value="{{ okrug }}">{{ okrug }}</option>
+                    {% endfor %}
+                </select>
+            <p><label class="metro_label"> Метро:</label>
+                <select class="metro_selector" name="metro">
+                    {% for metro in metros %}
+                        <option value="{{ metro }}">{{ metro }}</option>
+                    {% endfor %}
+                </select>
+            <p><label class="route_time_label">Время в пути до метро:</label><input type="number" class="route_time_input" name="route_minutes" value="" required/>
+            <p><label class="total_area_label">Общая площадь:</label><input type="number" class="total_area_input" name="total_area" value="" required/>
+            <p><label class="rooms_label">Кол-во комнат:</label><input type="number" class="rooms_input" name="rooms" value="" required/>
+            <p><<input type="submit" class="submit_button" value="Предскзаать!"/>
+        </form>
+    </div>
