@@ -1,34 +1,34 @@
 import joblib
 from flask import Flask, render_template, request
 import pandas as pd
-import pickle
-from model import model
-from model.model import FeatureSelector, NumberSelector, NumericPower, OHEEncoder
+from model.model import FeatureSelector, NumberSelector, OHEEncoder
 app = Flask(__name__)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def start():
+
+    data = pd.read_csv("data/moscow_estate.csv",
+                       names=['okrug', 'metro', 'route_minutes', 'total_area', 'rooms', 'price'])
+
     if request.method == 'POST':
+        okrug = request.form['okrug']
         metro = request.form['metro']
-        way = request.form['way']
-        minutes = int(request.form['minutes'])
-        living_area = int(request.form['living_area'])
-        kitchen_area = int(request.form['kitchen_area'])
+        minutes = int(request.form['route_minutes'])
+        rooms = int(request.form['rooms'])
         total_area = int(request.form['total_area'])
 
-        df = pd.DataFrame({'metro': metro,
-                           'way': way,
-                           'minutes': minutes,
-                           'living_area': living_area,
-                           'kitchen_area': kitchen_area,
+        df = pd.DataFrame({'okrug': okrug,
+                           'metro': metro,
+                           'route_minutes': minutes,
+                           'rooms': rooms,
                            'total_area': total_area}, index=[0])
 
         model = joblib.load('model/model.pkl')
         prediction = model.predict(df)
 
         return render_template("prediction.html", prediction=prediction[0])
-    return render_template("index.html")
+    return render_template("index.html", okrugs=data.okrug.unique(), metros=data.metro.unique())
 
 
 if __name__ == '__main__':
