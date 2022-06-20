@@ -1,6 +1,6 @@
 # Проект по предсказанию цен на квартиры в Москве
 <p align="center">
-  <img src="https://www.1zoom.ru/%D0%93%D0%BE%D1%80%D0%BE%D0%B4%D0%B0/%D0%BE%D0%B1%D0%BE%D0%B8/556811/z5660.6/1920x1080" width="350" title="hover text">
+  <img src="app/static/images/moscow.jpg" width="350" title="hover text">
 </p>
 
 ## файлы и папки проекта
