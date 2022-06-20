@@ -9,7 +9,11 @@
   > templates - Директория с шаблонами для сайта
   > 
   > model.ipynb - Ноутбук с EDA
+  > 
   > run_server.py - Скрипт запускающий flask сервер
 2. parser - Scrapy проект парсинга m2.ru
+3. requirements.txt - список используемых библиотек
+
+
 
 
