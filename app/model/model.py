@@ -53,6 +53,26 @@ class OHEEncoder(BaseEstimator, TransformerMixin):
                 X[col_] = 0
         return X[self.columns]
 
+class NumericPower(BaseEstimator, TransformerMixin):
+    def __init__(self, key, p = 2):
+        self.key = key
+        self.columns = []
+        self.p = p+1
+
+    def fit(self, X, y=None):
+        B = [self.key + str(i) for i in range(1, self.p)]
+        self.columns = B + ['log']
+        return self
+
+    def transform(self, X):
+        Xp = X.values.reshape(-1,1)
+        for i in range(2, self.p):
+            Xp = np.hstack([Xp,(X.values.reshape(-1,1) ** i).astype(float)])
+
+        Xp = np.hstack([Xp, np.log(X.values.reshape(-1,1) + 1).astype(float)])
+        B = pd.DataFrame(data = Xp, index = X.index,columns =[self.columns] )
+        return B[self.columns]
+
 
 def get_pipeline():
     num_cols = ['route_minutes', 'total_area', 'rooms']
@@ -70,6 +90,7 @@ def get_pipeline():
     for num_col in num_cols:
         cont_transformer = Pipeline([
                     ('selector', NumberSelector(key=num_col)),
+                    ('power', NumericPower(key=num_col, p=3)),
                     ('scale', StandardScaler())
                 ])
         final_transformers.append((num_col, cont_transformer))
@@ -77,7 +98,7 @@ def get_pipeline():
     feats = FeatureUnion(final_transformers)
     pipeline = Pipeline([
         ('features', feats),
-        ('classifier', CatBoostRegressor(iterations=2000, max_depth=10, learning_rate=1, silent=True, random_state=42)),
+        ('regressor', CatBoostRegressor(iterations=1000, max_depth=10, random_state=42, silent=True)),
     ])
 
     return pipeline
@@ -92,12 +113,15 @@ def fit_pipeline(X_train, y_train, pipeline, save_model=False):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv("../data/moscow_estate.csv", names=['okrug', 'metro', 'route_minutes', 'total_area', 'rooms', 'price'])
+    df = pd.read_csv("../data/moscow_estate.csv", names=['okrug', 'metro', 'distance_from_center', 'route_minutes', 'total_area', 'rooms', 'price'])
     pipe = get_pipeline()
     pipe = fit_pipeline(df.drop(['price'], axis=1), df['price'], pipe, save_model=True)
-    preds = pipe.predict(pd.DataFrame({'metro': 'Октябрьское Поле',
+    preds = pipe.predict(pd.DataFrame({'metro': 'Народное ополчение',
                            'okrug': 'СЗАО',
-                           'route_minutes': 8,
+                           'distance_from_center': 9.8,
+                           'route_minutes': 10,
                            'rooms': 2,
-                           'total_area': 51.0}, index=[0]))
+                           'total_area': 45.0}, index=[0]))
+    true = 12000000
     print(preds[0])
+    print(abs(np.ceil(true-preds[0])))

@@ -2,6 +2,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 <div class="main">
+    <h2 class="header">Предсказание цен на квартиры в Москве</h2>
         <form action="/", method="post" class="form">
             <p><label class="okrug_label">Округ:</label>
                 <select class="okrug_selector" name="okrug">
@@ -16,6 +17,7 @@
                     {% endfor %}
                 </select>
             <p><label class="route_time_label">Время в пути до метро:</label><input type="number" class="route_time_input" name="route_minutes" value="" required/>
+            <p><label class="distance_from_center_label">Расстояние до центра:</label><input type="number" class="distance_from_center_input" name="distance_from_center" value="" required/>
             <p><label class="total_area_label">Общая площадь:</label><input type="number" class="total_area_input" name="total_area" value="" required/>
             <p><label class="rooms_label">Кол-во комнат:</label><input type="number" class="rooms_input" name="rooms" value="" required/>
             <p><<input type="submit" class="submit_button" value="Предскзаать!"/>

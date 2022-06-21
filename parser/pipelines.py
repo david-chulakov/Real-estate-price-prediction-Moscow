@@ -11,6 +11,7 @@ def write_to_csv(item):
 class WriteToCsv(object):
 
     def process_item(self, item, spider):
+        print()
         write_to_csv(item)
         return item
 

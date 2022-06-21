@@ -1,15 +1,16 @@
 import joblib
 from flask import Flask, render_template, request
 import pandas as pd
-from model.model import FeatureSelector, NumberSelector, OHEEncoder
+import numpy as np
+from model.model import FeatureSelector, NumericPower, NumberSelector, OHEEncoder
 app = Flask(__name__)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def start():
 
-    data = pd.read_csv("data/moscow_estate.csv",
-                       names=['okrug', 'metro', 'route_minutes', 'total_area', 'rooms', 'price'])
+    data = pd.read_csv("app/data/moscow_estate.csv",
+                       names=['okrug', 'metro', 'distance_from_center', 'route_minutes', 'total_area', 'rooms', 'price'])
 
     if request.method == 'POST':
         okrug = request.form['okrug']
@@ -24,10 +25,10 @@ def start():
                            'rooms': rooms,
                            'total_area': total_area}, index=[0])
 
-        model = joblib.load('model/model.pkl')
+        model = joblib.load('app/model/model.pkl')
         prediction = model.predict(df)
 
-        return render_template("prediction.html", prediction=prediction[0])
+        return render_template("prediction.html", prediction=np.ceil(prediction[0]))
     return render_template("index.html", okrugs=data.okrug.unique(), metros=data.metro.unique())
 
 
