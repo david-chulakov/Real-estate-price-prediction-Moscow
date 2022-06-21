@@ -3,13 +3,15 @@
   <img src="app/static/images/moscow.jpg" width="1000" title="hover text">
 </p>
 
-# Как запустить сервер?
-> 1. Установить виртуальное окружение или установить библиотеки из requirements.txt
-> 2. ``` python3 app/run_server.py ```
+# Как запустить сервер(linux)?
+> 1. ``` sh ./instal_venv.sh ```
+> 2. ``` source venv/bin/activate ```
+> 3. ``` python3 app/run_server.py ```
 
 # Как запустить парсер
-> 1. Установить виртуальное окружение или установить библиотеки из requirements.txt
-> 2. ``` scrapy crawl w2 ```
+> 1. ``` sh ./instal_venv.sh ```
+> 2. ``` source venv/bin/activate ```
+> 3. ``` scrapy crawl w2 ```
 
 ## Файлы и папки проекта
 1. app - Директория для приложения
